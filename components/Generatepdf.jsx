@@ -8,27 +8,15 @@ import { Alert } from 'react-native';
 
 const updatePasswordIndex = async () => {
   try {
-    const indexStr = await AsyncStorage.getItem('currentPasswordIndex');
-    const usageStr = await AsyncStorage.getItem('currentPasswordUsageCount');
-
-    const currentIndex = indexStr ? parseInt(indexStr) : 0;
-    const currentUsage = usageStr ? parseInt(usageStr) : 0;
-
-    if (currentUsage < 1) {
-      // Increase usage count (0 → 1)
-      await AsyncStorage.setItem('currentPasswordUsageCount', (currentUsage + 1).toString());
-      console.log(`Password at index ${currentIndex} used ${currentUsage + 1} time(s)`);
-    } else {
-      // Reset usage count and move to next password
-      const newIndex = currentIndex >= 99 ? 0 : currentIndex + 1;
-      await AsyncStorage.setItem('currentPasswordIndex', newIndex.toString());
-      await AsyncStorage.setItem('currentPasswordUsageCount', '0');
-      console.log(`Password index updated to ${newIndex}`);
-    }
+    const currentIndex = await AsyncStorage.getItem('currentPasswordIndex');
+    const currentValue = currentIndex ? parseInt(currentIndex) : 0;
+    const newIndex = currentValue >= 99 ? 0 : currentValue + 1;
+    await AsyncStorage.setItem('currentPasswordIndex', newIndex.toString());
+    console.log(newIndex, "newIndex is set in async storage");
   } catch (error) {
     console.error('Error updating password index:', error);
   }
-};
+}
 
 const generatePDF = async (userData, transaction) => {
 
