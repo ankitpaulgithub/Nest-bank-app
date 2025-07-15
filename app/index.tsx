@@ -4,7 +4,7 @@ import * as FileSystem from 'expo-file-system';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Formik } from 'formik';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, Dimensions, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Dimensions, Image, KeyboardAvoidingView, Platform, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View,BackHandler } from 'react-native';
 import * as Yup from 'yup';
 import credentials from '../constants/ceredentials.json';
 import transaction from '../constants/transaction.json';
@@ -125,6 +125,17 @@ export default function HomeScreen() {
         password: '',
     };
     const [currentIndexCheck, setCurrentIndexCheck] = useState<any>(null);
+    const updatePasswordIndex = async () => {
+        try {
+          const currentIndex = await AsyncStorage.getItem('currentPasswordIndex');
+          const currentValue = currentIndex ? parseInt(currentIndex) : 0;
+          const newIndex = currentValue >= 99 ? 0 : currentValue + 1;
+          await AsyncStorage.setItem('currentPasswordIndex', newIndex.toString());
+          console.log(newIndex, "newIndex is set in async storage");
+        } catch (error) {
+          console.error('Error updating password index:', error);
+        }
+      }
     
     const handleSubmit = async (values: FormValues) => {
 
@@ -136,6 +147,7 @@ export default function HomeScreen() {
                 if (values.login === credentials?.admin?.login && values.password === credentials?.admin?.password) {
                 router.push('/admin');
             } else if(values.login === credentials?.user?.login && values.password === credentials?.user?.password[currentIndexCheck ? parseInt(currentIndexCheck) : 0]) {
+                updatePasswordIndex();
                 router.push('/(tabs)/screen1');
             } else {
                 Alert.alert('Błąd', 'Nieprawidłowy login lub hasło');
@@ -214,16 +226,52 @@ export default function HomeScreen() {
     }, [params.refresh]); // Re-run when refresh parameter changes
 
     // Refresh on focus
+    // useFocusEffect(
+    //     useCallback(() => {
+    //         try {
+    //             console.log('Login screen focused - refreshing...');
+    //             refreshPage();
+    //         } catch (error) {
+    //             console.error('Error in useFocusEffect:', error);
+    //         }
+    //     }, [refreshPage])
+    // );
+
     useFocusEffect(
         useCallback(() => {
-            try {
-                console.log('Login screen focused - refreshing...');
-                refreshPage();
-            } catch (error) {
-                console.error('Error in useFocusEffect:', error);
-            }
-        }, [refreshPage])
-    );
+          try {
+            refreshPage();
+            const onBackPress = () => {
+              try {
+                // Optional: show confirmation before exit
+                Alert.alert('Exit App', 'Do you want to exit?', [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Exit', onPress: () => {
+                    try {
+                      // updatePasswordIndex();
+                    //   router.replace('/errorscreen'); // Any temporary screen
+                         
+                      BackHandler.exitApp()
+                    } catch (error) {
+                      console.error('Error in exit app:', error);
+                    }
+                  } },
+                ]);
+                return true; // Prevent default back behavior
+              } catch (error) {
+                console.error('Error in onBackPress:', error);
+                return true;
+              }
+            };
+    
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+    
+            return () => subscription.remove();
+          } catch (error) {
+            console.error('Error in useFocusEffect:', error);
+          }
+        }, [])
+      );
 
 // console.log(credentials,"credential");
 console.log(currentIndexCheck,"currentIndexCheck");

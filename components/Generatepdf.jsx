@@ -1,10 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
+import * as SAF from 'expo-file-system';
 import * as Print from 'expo-print';
+import * as DocumentPicker from 'expo-document-picker';
+import { StorageAccessFramework } from 'expo-file-system';
 import { router } from 'expo-router';
 import { Alert } from 'react-native';
-
+import * as Sharing from 'expo-sharing';
 
 const updatePasswordIndex = async () => {
   try {
@@ -25,26 +28,26 @@ const generatePDF = async (userData, transaction) => {
   }
   const randomNumber = await generateRandomThreeDigit();
 
-    const formatAccountNumber = (value) => {
-        try {
-            if (!value) return '';
-            // Remove all spaces first
-            const numbers = value.replace(/\s/g, '');
-            // Format the number with spaces
-            if (numbers.length <= 2) return numbers;
-            if (numbers.length <= 6) return `${numbers.slice(0, 2)} ${numbers.slice(2)}`;
-            if (numbers.length <= 10) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6)}`;
-            if (numbers.length <= 14) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10)}`;
-            if (numbers.length <= 18) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14)}`;
-            if (numbers.length <= 22) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14, 18)} ${numbers.slice(18)}`;
-            return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14, 18)} ${numbers.slice(18, 22)} ${numbers.slice(22, 26)}`;
-        } catch (error) {
-            console.error('Error formatting account number:', error);
-            return value || '';
-        }
-    };
+  const formatAccountNumber = (value) => {
+    try {
+      if (!value) return '';
+      // Remove all spaces first
+      const numbers = value.replace(/\s/g, '');
+      // Format the number with spaces
+      if (numbers.length <= 2) return numbers;
+      if (numbers.length <= 6) return `${numbers.slice(0, 2)} ${numbers.slice(2)}`;
+      if (numbers.length <= 10) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6)}`;
+      if (numbers.length <= 14) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10)}`;
+      if (numbers.length <= 18) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14)}`;
+      if (numbers.length <= 22) return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14, 18)} ${numbers.slice(18)}`;
+      return `${numbers.slice(0, 2)} ${numbers.slice(2, 6)} ${numbers.slice(6, 10)} ${numbers.slice(10, 14)} ${numbers.slice(14, 18)} ${numbers.slice(18, 22)} ${numbers.slice(22, 26)}`;
+    } catch (error) {
+      console.error('Error formatting account number:', error);
+      return value || '';
+    }
+  };
 
-    const htmlContent = `
+  const htmlContent = `
     <html>
       <head>
         <style>
@@ -183,91 +186,53 @@ const generatePDF = async (userData, transaction) => {
       </body>
     </html>
     `;
-    
 
-  try {
-    console.log('Starting PDF generation...');
-    
-    // Generate PDF
-    const { uri } = await Print.printToFileAsync({ 
-      html: htmlContent,
-      base64: false
-    });
-    
-    console.log('PDF created at:', uri);
 
-    // Check if file exists
-    const fileInfo = await FileSystem.getInfoAsync(uri);
-    if (!fileInfo.exists) {
-      throw new Error('Generated PDF file does not exist');
-    }
-
-    console.log('File info:', fileInfo);
-
-    // Create custom filename with date and transaction details
-    const transactionDate = transaction?.date ? new Date(transaction.date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
-    const amount = transaction?.finalAmount || '0';
-    const customFileName = `Potwierdzenie-transakcji-nr-${amount}${randomNumber}-z-dnia-${transactionDate}.pdf`;
-    
-    // Create new path with custom filename
-    const newPath = FileSystem.documentDirectory + customFileName;
-    
-    console.log('Moving file to:', newPath);
-
-    // Move the file to the new location with custom name
-    await FileSystem.moveAsync({
-      from: uri,
-      to: newPath,
-    });
-
-    console.log('File moved successfully');
-
-    // Request permissions first
-    const { status } = await MediaLibrary.requestPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission Required', 'Permission to access media library is required to save the PDF!');
-      return;
-    }
-
-    console.log('Permissions granted, creating asset...');
-
-    // Create asset from the renamed file
-    const asset = await MediaLibrary.createAssetAsync(newPath);
-    console.log('Asset created:', asset);
-
-    // Create album and add asset
-    await MediaLibrary.createAlbumAsync('Downloads', asset, false);
-    
-    Alert.alert('Success', `PDF saved as "${customFileName}" in Downloads folder!`, [
-      {
-        text: 'OK',
-        onPress: () => {
-          updatePasswordIndex();
-          router.replace('/loadingcreen'); // Any temporary screen
-setTimeout(() => {
-  router.replace(`/?refresh=${Date.now()}`);
-}, 10);
-          // router.replace(`/login?refresh=${Date.now()}`);
-        }
+    try {
+      const { uri } = await Print.printToFileAsync({ html: htmlContent });
+  
+      const transactionDate = transaction?.date
+        ? new Date(transaction.date).toISOString().slice(0, 10)
+        : new Date().toISOString().slice(0, 10);
+      const amount = transaction?.finalAmount || '0';
+      const safeDate = transactionDate.replace(/-/g, '_');
+      const fileName = `Potwierdzenie-transakcji-nr_${amount}${randomNumber}-z-dnia_${safeDate}.pdf`;
+  
+      // Step 1: Ask user to pick a folder (Downloads)
+      const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+      if (!permissions.granted) {
+        Alert.alert('Permission denied', 'Storage access is required to save PDF');
+        return;
       }
-    ]);
-    console.log('PDF saved successfully');
-
-  } catch (error) {
-    console.error('Error generating or saving PDF:', error);
-    
-    // More specific error messages
-    if (error.message.includes('Could not create asset')) {
-      Alert.alert('Error', 'Could not save PDF. Please check your device storage and try again.');
-    } else if (error.message.includes('Permission')) {
-      Alert.alert('Permission Error', 'Please grant media library permissions to save PDFs.');
-    } else if (error.message.includes('move')) {
-      Alert.alert('Error', 'Could not rename PDF file. Please try again.');
-    } else {
-      Alert.alert('Error', 'Failed to generate PDF. Please try again.');
+  
+      const folderUri = permissions.directoryUri;
+  
+      // Step 2: Create file inside selected folder
+      const fileUri = await StorageAccessFramework.createFileAsync(
+        folderUri,
+        fileName,
+        'application/pdf'
+      );
+  
+      // Step 3: Read PDF and write into folder
+      const pdfData = await FileSystem.readAsStringAsync(uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+  
+      await FileSystem.writeAsStringAsync(fileUri, pdfData, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+  
+      Alert.alert('Success', `PDF downloaded to Downloads folder as "${fileName}"`);
+      router.replace('/')
+    } catch (err) {
+      console.error('Download failed:', err);
+      Alert.alert('Error', 'Failed to save PDF to Downloads folder');
     }
-  }
-};
+    
+    
+  };
+
 
 export default generatePDF;
 {/* <tr>

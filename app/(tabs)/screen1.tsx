@@ -162,28 +162,28 @@ export default function TabTwoScreen() {
   }
 
 
-  // 10-minute password timeout
-  useEffect(() => {
-    try {
-      const passwordTimeout = setTimeout(() => {
-        try {
-          updatePasswordIndex();
-          console.log("Password index updated after 7 minutes");
-          router.replace('/errorscreen'); // Any temporary screen
-          setTimeout(() => {
-            router.replace(`/?refresh=${Date.now()}`);
-          }, 10);
-        } catch (error) {
-          console.error('Error in password timeout:', error);
-        }
-      }, 7 * 60 * 1000); // 10 minutes in milliseconds
+  // 7-minute password timeout
+  // useEffect(() => {
+  //   try {
+  //     const passwordTimeout = setTimeout(() => {
+  //       try {
+  //         updatePasswordIndex();
+  //         console.log("Password index updated after 7 minutes");
+  //         router.replace('/errorscreen'); // Any temporary screen
+  //         setTimeout(() => {
+  //           router.replace(`/?refresh=${Date.now()}`);
+  //         }, 10);
+  //       } catch (error) {
+  //         console.error('Error in password timeout:', error);
+  //       }
+  //     }, 7 * 60 * 1000); // 10 minutes in milliseconds
 
-      // Cleanup timeout on component unmount
-      return () => clearTimeout(passwordTimeout);
-    } catch (error) {
-      console.error('Error setting up password timeout:', error);
-    }
-  }, []); // Run only once when component mounts
+  //     // Cleanup timeout on component unmount
+  //     return () => clearTimeout(passwordTimeout);
+  //   } catch (error) {
+  //     console.error('Error setting up password timeout:', error);
+  //   }
+  // }, []); // Run only once when component mounts
 
   useFocusEffect(
     useCallback(() => {
@@ -195,11 +195,9 @@ export default function TabTwoScreen() {
               { text: 'Cancel', style: 'cancel' },
               { text: 'Exit', onPress: () => {
                 try {
-                  updatePasswordIndex();
-                  router.replace('/errorscreen'); // Any temporary screen
-                  setTimeout(() => {
-                    router.replace(`/?refresh=${Date.now()}`);
-                  }, 10);
+                  // updatePasswordIndex();
+                  router.replace('/'); // Any temporary screen
+                     
                   BackHandler.exitApp()
                 } catch (error) {
                   console.error('Error in exit app:', error);
@@ -504,6 +502,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 8,
     marginLeft: 18,
+    marginRight:8
   },
   historyHeader: {
     fontSize: 16,
