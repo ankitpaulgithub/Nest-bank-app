@@ -1,42 +1,62 @@
 {
   "expo": {
-    "name": "new-expo-app",
-    "slug": "new-expo-app",
-    "version": "1.0.0",
+    "name": "Nest Bank",
+    "slug": "nest-bank",
+    "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
-    "scheme": "newexpoapp",
+    "icon": "./assets/images/Nest_Bank_logo.png",
+    "scheme": "nestbankv3",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/images/Nest_Bank_logo.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.princeprabhat.nestbank",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/Nest_Bank_logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.princeprabhat.nestbank"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/Nest_Bank_logo.png"
     },
     "plugins": [
-      "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#16161f",
+          "image": "./assets/images/Nest_Bank_logo.png",
+          "dark": {
+            "image": "./assets/images/Nest_Bank_logo.png",
+            "backgroundColor": "#16161f"
+          },
+          "imageWidth": 400
         }
-      ]
+      ],
+      "expo-router",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "56d9ef1b-439c-406a-be10-ac7fe822cb79"
+      }
     }
   }
 }

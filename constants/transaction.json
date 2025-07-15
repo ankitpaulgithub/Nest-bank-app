@@ -1,0 +1,244 @@
+{
+    "transactions": [
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 17400,
+            "saveRecipient": false,
+            "credited":true,
+            "date": "2025-06-24T12:12:30.231Z",
+            "title": "Faktura VAT nr 8384",
+            "values": {
+                "accountNumber": "88428464975845434940578464",
+                "address": "",
+                "amount": "17400",
+                "recipientName": "Budimex S.A.",
+                "transferTitle": "Faktura VAT nr 8384"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 27550,
+            "saveRecipient": false,
+            "credited":true,
+            "date": "2025-06-24T12:12:30.231Z",
+            "title": "Faktura zaliczka nr 928491",
+            "values": {
+                "accountNumber": "74428464975845434949803584",
+                "address": "",
+                "amount": "27550",
+                "recipientName": "Unibep S.A.",
+                "transferTitle": "Faktura zaliczka nr 928491"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 12230,
+            "saveRecipient": false,
+            "credited":true,
+            "date": "2025-06-25T12:12:30.231Z",
+            "title": "Umowa zaliczka 9284819",
+            "values": {
+                "accountNumber": "36253732540272432843928439",
+                "address": "",
+                "amount": "12230",
+                "recipientName": "Grupa Maspex Sp. z o.o. Sp.k.",
+                "transferTitle": "Umowa zaliczka 9284819"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 15690,
+            "saveRecipient": false,
+            "credited":false,
+            "date": "2025-06-26T12:12:30.231Z",
+            "title": "Faktura VAT 19284",
+            "values": {
+                "accountNumber": "47376439843743643791743643",
+                "address": "",
+                "amount": "15690",
+                "recipientName": "Mostostal Warszawa S.A.",
+                "transferTitle": "Faktura VAT 19284"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1230,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-25T12:12:30.231Z",
+            "title": "Umowa zaliczka 928491",
+            "values": {
+                "accountNumber": "36253732540272432843928440",
+                "address": "",
+                "amount": "1230",
+                "recipientName": "Grupa Maspex Sp. z o.o. Sp.k.",
+                "transferTitle": "Umowa zaliczka 928491"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1740,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-25T12:12:30.231Z",
+            "title": "Faktura VAT nr 8384",
+            "values": {
+                "accountNumber": "88428464975845434940578465",
+                "address": "",
+                "amount": "1740",
+                "recipientName": "Budimex S.A.",
+                "transferTitle": "Faktura VAT nr 8384"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 2750,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-24T12:12:30.231Z",
+            "title": "Faktura zaliczka nr 928491",
+            "values": {
+                "accountNumber": "74428464975845434949803585",
+                "address": "",
+                "amount": "2750",
+                "recipientName": "Unibep S.A.",
+                "transferTitle": "Faktura zaliczka nr 928491"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1980,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-22T12:12:30.231Z",
+            "title": "Faktura VAT nr 7421",
+            "values": {
+                "accountNumber": "47376439843743643791743644",
+                "address": "",
+                "amount": "1980",
+                "recipientName": "Mostostal Warszawa S.A.",
+                "transferTitle": "Faktura VAT nr 7421"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1450,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-21T12:12:30.231Z",
+            "title": "Umowa zaliczka 927365",
+            "values": {
+                "accountNumber": "12345678901234567890123456",
+                "address": "",
+                "amount": "1450",
+                "recipientName": "Polimex Mostostal S.A.",
+                "transferTitle": "Umowa zaliczka 927365"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 2300,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-21T12:12:30.231Z",
+            "title": "Faktura VAT nr 6593",
+            "values": {
+                "accountNumber": "23456789012345678901234567",
+                "address": "",
+                "amount": "2300",
+                "recipientName": "Fakro Sp. z o.o.",
+                "transferTitle": "Faktura VAT nr 6593"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1670,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-19T12:12:30.231Z",
+            "title": "Faktura zaliczka nr 918273",
+            "values": {
+                "accountNumber": "34567890123456789012345678",
+                "address": "",
+                "amount": "1670",
+                "recipientName": "Erbud S.A.",
+                "transferTitle": "Faktura zaliczka nr 918273"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 2100,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-17T12:12:30.231Z",
+            "title": "Umowa zaliczka 905432",
+            "values": {
+                "accountNumber": "45678901234567890123456789",
+                "address": "",
+                "amount": "2100",
+                "recipientName": "PBG S.A.",
+                "transferTitle": "Umowa zaliczka 905432"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1850,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-15T12:12:30.231Z",
+            "title": "Faktura VAT nr 5839",
+            "values": {
+                "accountNumber": "56789012345678901234567890",
+                "address": "",
+                "amount": "1850",
+                "recipientName": "Hochtief Polska Sp. z o.o.",
+                "transferTitle": "Faktura VAT nr 5839"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1390,
+            "saveRecipient": false,
+            "credited": false,
+            "date": "2025-06-13T12:12:30.231Z",
+            "title": "Faktura zaliczka nr 897654",
+            "values": {
+                "accountNumber": "67890123456789012345678901",
+                "address": "",
+                "amount": "1390",
+                "recipientName": "Strabag Sp. z o.o.",
+                "transferTitle": "Faktura zaliczka nr 897654"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 1950,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-11T12:12:30.231Z",
+            "title": "Umowa zaliczka 876543",
+            "values": {
+                "accountNumber": "78901234567890123456789012",
+                "address": "",
+                "amount": "1950",
+                "recipientName": "Skanska S.A.",
+                "transferTitle": "Umowa zaliczka 876543"
+            }
+        },
+        {
+            "deliveryType": "natychmiastowy",
+            "finalAmount": 4721,
+            "saveRecipient": false,
+            "credited": true,
+            "date": "2025-06-09T12:12:30.231Z",
+            "title": "Faktura VAT nr 4721",
+            "values": {
+                "accountNumber": "89012345678901234567890123",
+                "address": "",
+                "amount": "4721",
+                "recipientName": "Budimex S.A.",
+                "transferTitle": "Faktura VAT nr 4721"
+            }
+        }
+    ]
+}
