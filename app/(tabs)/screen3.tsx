@@ -54,15 +54,15 @@ export default function screen3() {
             .required('Tytuł przelewu jest wymagany'),
         amount: Yup.string()
             .required('Kwota jest wymagana')
-            .matches(/^\d+([,.]\d{1,2})?$/, 'Nieprawidłowy format kwoty')
+            .matches(/^[\d\s]+([,]\d{1,2})?$/, 'Nieprawidłowy format kwoty')
             .test('amount', 'Kwota musi być większa niż 0', (value) => {
                 if (!value) return false;
-                const numValue = parseFloat(value.replace(',', '.'));
+                const numValue = parseFloat(value.replace(/\s/g, '').replace(',', '.'));
                 return numValue > 0;
             })
             .test('maxAmount', 'Kwota nie może przekraczać dostępnych środków', (value) => {
                 if (!value) return false;
-                const numValue = parseFloat(value.replace(',', '.'));
+                const numValue = parseFloat(value.replace(/\s/g, '').replace(',', '.'));
                 return numValue <= currentAmount;
             }),
     });
@@ -98,7 +98,8 @@ export default function screen3() {
             // Remove spaces from account number before submission
             const formattedValues = {
                 ...values,
-                accountNumber: values.accountNumber.replace(/\s/g, '')
+                accountNumber: values.accountNumber.replace(/\s/g, ''),
+                amount: values.amount.replace(/\s/g, '').replace(',', '.')
             };
             console.log('Form submitted:', formattedValues);
             if(deliveryType === 'natychmiastowy'){
@@ -117,6 +118,7 @@ export default function screen3() {
                 saveRecipient: saveRecipient,
                 values: formattedValues,
             }
+            console.log(obj,"obj");
             const params = JSON.stringify(obj);
             router.push(`/screen4?params=${params}`);
             
@@ -228,7 +230,10 @@ export default function screen3() {
                                 <View style={styles.sectionBox}>
                                     <View style={styles.accountRow}>
                                         <View style={styles.accountInfo}>
-                                            <Text style={styles.accountAmount}>{currentAmount?.toFixed(2)} PLN</Text>
+                                            <Text style={styles.accountAmount}>{parseFloat(currentAmount?.toString() || '0').toLocaleString('pl-PL', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            })} PLN</Text>
                                         </View>
                                         <Ionicons name="chevron-forward" size={20} color="#bbb" />
                                     </View>
@@ -347,7 +352,38 @@ export default function screen3() {
                                             placeholder="0,00"
                                             placeholderTextColor="#bbb"
                                             keyboardType="numeric"
-                                            onChangeText={handleChange('amount')}
+                                            onChangeText={(text) => {
+                                                // Remove all non-numeric characters except comma
+                                                const cleanText = text.replace(/[^0-9,]/g, '');
+                                                
+                                                // Handle comma as decimal separator
+                                                const parts = cleanText.split(',');
+                                                if (parts.length > 2) return; // Only allow one comma
+                                                
+                                                let formattedText = '';
+                                                if (parts.length === 1) {
+                                                    // No decimal part
+                                                    const wholePart = parts[0].replace(/\s/g, '');
+                                                    if (wholePart.length > 0) {
+                                                        // Add thousand separators
+                                                        formattedText = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                                                    }
+                                                } else {
+                                                    // Has decimal part
+                                                    const wholePart = parts[0].replace(/\s/g, '');
+                                                    const decimalPart = parts[1];
+                                                    
+                                                    if (wholePart.length > 0) {
+                                                        // Add thousand separators to whole part
+                                                        const formattedWhole = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+                                                        formattedText = `${formattedWhole},${decimalPart}`;
+                                                    } else {
+                                                        formattedText = `,${decimalPart}`;
+                                                    }
+                                                }
+                                                
+                                                setFieldValue('amount', formattedText);
+                                            }}
                                             onBlur={handleBlur('amount')}
                                             value={values.amount}
                                         />

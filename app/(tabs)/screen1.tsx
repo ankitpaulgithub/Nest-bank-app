@@ -146,7 +146,7 @@ export default function TabTwoScreen() {
   const iconsClick = (id: any) => {
     try {
       if(id === 1){
-        router.push('/screen2')
+        router.push('/screen3')
       }else{
         Alert.alert("Nie masz uprawnień dla tej funkcji",)
       }
@@ -279,7 +279,12 @@ export default function TabTwoScreen() {
               </View>
               <View style={{ marginTop: 18, marginLeft: "auto", }}>
                 <Text style={styles.balanceLabel}>Dostępne środki</Text>
-                <Text style={styles.balanceValue}>{parseFloat(item.balance || '0').toFixed(2)} PLN</Text>
+                <Text style={styles.balanceValue}>
+                  {parseFloat(item.balance || '0').toLocaleString('pl-PL', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })} PLN
+                </Text>
               </View>
 
             </View>
@@ -351,7 +356,10 @@ export default function TabTwoScreen() {
 
               <View style={{ justifyContent: 'center' }}>
                 <Text style={[styles.transactionAmount, { color: item?.credited ? '#222' : '#fa575e' }]}>
-                  {item?.credited ? '+' : '-'}{item?.finalAmount} PLN
+                  {item?.credited ? '+' : '-'}{parseFloat(item?.finalAmount || '0').toLocaleString('pl-PL', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })} PLN
                 </Text>
               </View>
             </View>

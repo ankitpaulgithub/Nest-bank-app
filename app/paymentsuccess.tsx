@@ -86,7 +86,10 @@ export default function paymentsuccess() {
     <View style={styles.container}>
       <Ionicons name="checkmark" size={80} color="#2e9b4d" style={styles.checkIcon} />
       <Text style={styles.title}>Przelew zlecony</Text>
-      <Text style={styles.amount}>{parseFloat(data?.finalAmount || '0').toFixed(2)} PLN</Text>
+      <Text style={styles.amount}>{parseFloat(data?.finalAmount?.toString() || '0').toLocaleString('pl-PL', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }) || '0'} PLN</Text>
       <Text style={styles.recipient}>{data?.companyName}</Text>
       <Text style={styles.subtitle}>{data?.title}</Text>
       <Text style={styles.date}>Data realizacji: {new Date().toLocaleDateString()}</Text>

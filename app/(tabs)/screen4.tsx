@@ -83,7 +83,10 @@ export default function screen4() {
                 <View style={{ marginBottom: 20 }} >
                     <Text style={styles.titletext}>Kwota</Text>
                     {/* <Text style={styles.descriptiontext}>{parseFloat(data?.values?.amount || '0.0').toFixed(2) || '0.0'} PLN</Text> */}
-                    <Text style={styles.descriptiontext}>{sum.toFixed(2) || '0.0'} PLN</Text>
+                    <Text style={styles.descriptiontext}>{parseFloat(sum?.toString() || '0').toLocaleString('pl-PL', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  }) || '0.0'} PLN</Text>
                 </View>
 
                 <View style={{ marginBottom: 20 }} >
@@ -98,7 +101,7 @@ export default function screen4() {
 
                 <View style={{ marginBottom: 20 }} >
                     <Text style={styles.titletext}>Opłata za przelew:</Text>
-                    <Text style={styles.descriptiontext}>0.00 PLN</Text>
+                    <Text style={styles.descriptiontext}>0,00 PLN</Text>
                 </View>
 
                 <View style={styles.warningBox}>
