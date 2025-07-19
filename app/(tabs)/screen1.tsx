@@ -143,9 +143,13 @@ export default function TabTwoScreen() {
     }
   }
 
-  const iconsClick = () => {
+  const iconsClick = (id: any) => {
     try {
-      Alert.alert("Nie masz uprawnień dla tej funkcji",)
+      if(id === 1){
+        router.push('/screen2')
+      }else{
+        Alert.alert("Nie masz uprawnień dla tej funkcji",)
+      }
     } catch (error) {
       console.error('Error in iconsClick:', error);
     }
@@ -226,18 +230,18 @@ export default function TabTwoScreen() {
 
       {/* header */}
       <View style={styles.header}>
-        <Text style={{ color: 'white', fontSize: 16, }}>{userData?.name}</Text>
+        <Text style={{ color: 'white', fontSize: 14, }}>{userData?.name && userData?.name.length > 10 ? userData?.name.slice(0, 10) + "..." : userData?.name}</Text>
         <Text style={{ color: "#fff", fontSize: 12, fontWeight: "semibold" }}>{userData?.accountNumber}
 
-          <Entypo name="chevron-small-down" size={18} color="#fff" />
+          <Entypo name="chevron-small-down" size={12} color="#fff" />
         </Text>
 
         <View style={{ display: "flex", flexDirection: "row", gap: 10 }}>
           <TouchableOpacity style={styles.settingsIcon}>
-            <Ionicons name="settings-outline" size={22} color="#fff" />
+            <Ionicons name="settings-outline" size={20} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.settingsIcon}>
-            <Octicons name="mail" size={22} color="#fff" />
+            <Octicons name="mail" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -260,7 +264,7 @@ export default function TabTwoScreen() {
             <View style={styles.headerCard}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                 <View>
-                  <Text style={styles.accountName}>{item.name}</Text>
+                  <Text style={styles.accountName}>{item.name && item.name.length > 26 ? item.name.slice(0, 26) + "..." : item.name}</Text>
                   <Text style={styles.accountNumber}>{item.number?.slice(0, 4) + "••••••••••••••••••••"}
                     <Ionicons name="share-social-outline" size={18} color="#fff" />
                   </Text>
@@ -297,7 +301,7 @@ export default function TabTwoScreen() {
         {/* Quick Actions */}
         <View style={styles.quickActionsRow}>
           {quickActions.map((action, idx) => (
-            <TouchableOpacity onPress={iconsClick} key={idx} style={styles.quickActionBtn}>
+            <TouchableOpacity onPress={() => iconsClick(idx)} key={idx} style={styles.quickActionBtn}>
               {action.isBlik ? (
                 <View style={styles.quickActionBtnicons}>
                   {/* <FontAwesome5 name="b" size={28} color="#fff" style={{ fontWeight: 'bold' }} /> */}
@@ -318,8 +322,8 @@ export default function TabTwoScreen() {
         </View>
         {/* History */}
         <View style={styles.historyHeaderRow}>
-          <Text style={styles.historyHeader}>Historia - {accounts[selectedIndex].name}</Text>
-          <Ionicons name="chevron-down" size={18} color="#222" style={{ marginLeft: 4 }} />
+          <Text style={styles.historyHeader}>Historia - {accounts[selectedIndex].name && accounts[selectedIndex].name.length > 8 ? accounts[selectedIndex].name.slice(0, 8) + "..." : accounts[selectedIndex].name}</Text>
+          <Ionicons name="chevron-down" size={16} color="#222" style={{ marginLeft: 4 }} />
 
 
           <TouchableOpacity onPress={() => PDFgenerate(sortedTransactions?.[0])} style={{ backgroundColor: "#5e5498", padding: 10, borderRadius: 10, margin: 10, alignItems: "center", justifyContent: "center", width: "auto", alignSelf: "center", marginLeft: "auto" }}>
